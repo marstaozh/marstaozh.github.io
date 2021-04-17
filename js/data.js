@@ -1,0 +1,98 @@
+var treeJson = [
+    {
+        "menuArr": [
+            {
+                "href":"java/JavaCollection.html",
+                "name":"集合",
+                "dataModuleId":"0"
+            },
+            {
+                "menuArr": [
+                    {
+                        "href":"thread.html",
+                        "name":"基础知识",
+                        "dataModuleId":"0"
+                    },
+                    {
+                        "href":"treadLocal.html",
+                        "name":"ThreadLocal",
+                        "dataModuleId":"1"
+                    }
+                ],
+                "id": "Tread",
+                "name": "多线程"
+            },
+            {
+                "menuArr": [
+                    {
+                        "href":"factory.html",
+                        "name":"工厂模式",
+                        "dataModuleId":"0"
+                    }
+                ],
+                "id": "designModel",
+                "name": "设计模式"
+            },
+            {
+                "href":"con1.html",
+                "name":"lambda",
+                "dataModuleId":"0"
+            }
+        ],
+        "id": "Java",
+        "name": "Java"
+    }
+];
+
+var nodeTemplate = "<li data-module-id=\"replaceNodeDataModuleId\" class=\"menu_title_primary\">" + 
+"<a class=\"collapsed\" data-toggle=\"collapse\" data-target=\"#replaceNodeDivId\">replateNodeMenuName<span class=\"caret\"></span></a>" +
+"<div id=\"replaceNodeDivId\" class=\"collapse\" aria-expanded=\"false\" style=\"height: 1px;\">" +
+  "<ul class=\"list-unstyled\">" +
+  "replaceLi" +
+  "</ul>" +
+"</div>" +  
+"</li>";
+
+var leafTemplate = "<li><a data-module-id=\"replaceLeafDataModuleId\" target=\"mIframe\" href=\"replaceLeafHref\">replaceLeafName</a></li>";
+
+$(function(){
+    
+    var reg = new RegExp("replaceNodeDivId","g");
+    function recursionTree(nodeJson, level) {
+        var menu = "";
+        $.each(nodeJson, function(index, value) {
+            if(value.menuArr) {
+                
+                var nodeLi = nodeTemplate.replace(/replaceNodeDataModuleId/, level);
+                nodeLi = nodeLi.replace(reg, value.id);
+                nodeLi = nodeLi.replace(/replateNodeMenuName/, value.name);
+
+                var li = recursionTree(value.menuArr, level+1);
+                nodeLi = nodeLi.replace(/replaceLi/, li);
+                menu += nodeLi;
+                
+            }else {
+                var leafLi = leafTemplate.replace(/replaceLeafDataModuleId/, value.dataModuleId);
+                leafLi = leafLi.replace(/replaceLeafHref/, value.href);
+                if(level == 3) {
+                    leafLi = leafLi.replace(/replaceLeafName/, "&nbsp;&nbsp;● " + value.name);
+                }else {
+                    leafLi = leafLi.replace(/replaceLeafName/, "● " + value.name);
+                }
+
+                menu += leafLi;
+            }
+        });
+
+        return menu;
+    };
+
+    function initTree () {
+
+        var menu = recursionTree(treeJson, 1);
+        $("#menu").append(menu);
+    }
+
+    initTree();
+    
+});
