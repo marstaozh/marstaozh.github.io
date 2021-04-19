@@ -48,7 +48,7 @@ body {
 	border-top: 4px solid;
 	content: "";
 }
-.menu_title_primary li:hover {
+.menu_title_primary a:hover {
 	background: #f4f5f9
 }
 .menu_title_primary div {
