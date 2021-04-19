@@ -56,6 +56,17 @@ var treeJson = [
         ],
         "id": "Java",
         "name": "Java"
+    },
+    {
+        "id": "database",
+        "name": "数据库",
+        "menuArr": [
+            {
+                "href":"../md/database/mariaDB",
+                "name":"lambda",
+                "dataModuleId":"0"  
+            }
+        ]
     }
 ];
 
@@ -69,7 +80,9 @@ var nodeTemplate = "<li data-module-id=\"replaceNodeDataModuleId\" class=\"menu_
 "</div>" +  
 "</li>";
 
-var leafTemplate = "<li><a data-module-id=\"replaceLeafDataModuleId\" target=\"mIframe\" href=\"replaceLeafHref\">replaceLeafName</a></li>";
+// var leafTemplate = "<li><a data-module-id=\"replaceLeafDataModuleId\" target=\"mIframe\" href=\"replaceLeafHref\">replaceLeafName</a></li>";
+var leafTemplate = "<li><a data-module-id=\"replaceLeafDataModuleId\" target=\"mIframe\" "+
+                    "onclick=\"converteMd('replaceLeafHref')\">replaceLeafName</a></li>";
 
 $(function(){
     
@@ -109,7 +122,7 @@ $(function(){
 
         var menu = recursionTree(treeJson, 1);
         $("#menu").append(menu);
-    }
+    };
 
     initTree();
     

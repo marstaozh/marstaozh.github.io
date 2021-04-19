@@ -7,6 +7,7 @@
 <title>Mars</title>
 <script src="js/jquery1.8.2.js"></script>
 <script src="js/bootstrap.js"></script>
+<script src="js/showdown.js"></script>
 <script src="js/data.js"></script>
 <link rel="stylesheet" href="css/bootstrap.css">
 <link rel="stylesheet" href="css/bootstrap-theme.css">
@@ -28,7 +29,7 @@
         </ul>
       </div>
       <div class="col-md-10 content container">
-        <iframe id='mIframe' name='mIframe' src='site.html'></iframe>
+        <!-- <iframe id='mIframe' name='mIframe' src='site.html'></iframe> -->
       </div>
     </div>
   </div>
@@ -53,6 +54,14 @@ $(function(){
 
 function setAttrs(conf){
   $("#mIframe").height(conf.height);
+};
+
+function converteMd(href) {
+    $.get('java/installDocker.md', function(data) {
+        var converter = new showdown.Converter();
+        var html = converter.makeHtml(data);
+        $(".content").html(html);
+    });
 };
 
 </script>
