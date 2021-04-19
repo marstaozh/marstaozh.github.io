@@ -60,7 +60,8 @@ var treeJson = [
 ];
 
 var nodeTemplate = "<li data-module-id=\"replaceNodeDataModuleId\" class=\"menu_title_primary\">" + 
-"<a class=\"collapsed\" data-toggle=\"collapse\" data-target=\"#replaceNodeDivId\">replateNodeMenuName<span class=\"caret\"></span></a>" +
+"<a class=\"collapsed \" data-toggle=\"collapse\" data-target=\"#replaceNodeDivId\">" +
+"<span class=\"glyphicon glyphicon-folder-open\"></span>replateNodeMenuName<span class=\"caret\"></span></a>" +
 "<div id=\"replaceNodeDivId\" class=\"collapse\" aria-expanded=\"false\" style=\"height: 1px;\">" +
   "<ul class=\"list-unstyled\">" +
   "replaceLi" +
