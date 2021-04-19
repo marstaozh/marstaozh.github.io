@@ -2,8 +2,23 @@ var treeJson = [
     {
         "menuArr": [
             {
-                "href":"java/JavaCollection.html",
+                "href":"java/javaCollection.html",
                 "name":"集合",
+                "dataModuleId":"0"
+            },
+            {
+                "href":"java/BIO.html",
+                "name":"同步与异步&阻塞与非阻塞",
+                "dataModuleId":"0"
+            },
+            {
+                "href":"java/netty.html",
+                "name":"Netty",
+                "dataModuleId":"0"
+            },
+            {
+                "href":"java/transaction.html",
+                "name":"事务",
                 "dataModuleId":"0"
             },
             {
