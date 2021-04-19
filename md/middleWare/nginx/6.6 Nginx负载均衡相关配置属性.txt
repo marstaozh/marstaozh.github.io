@@ -1,0 +1,166 @@
+0. 配置上游服务器(负载均衡默认使用轮询)
+	upstream tomcats {
+		server 192.168.1.173:8080;
+		server 192.168.1.190:8080;
+		server 192.168.1.174:8080;
+		server 192.168.1.175:8080;
+	}
+
+	server {
+		listen       80;
+		server_name  www.tomcats.com;
+	
+		location / {
+			proxy_pass http://tomcats
+		}
+	}
+
+1. 负载均衡之权重
+	#weight后的数字越大，调用的概率越大
+	upstream tomcats {
+		server 192.168.1.173:8080 weight=2;
+		server 192.168.1.190:8080 weight=2;
+		server 192.168.1.174:8080 weight=2;
+		server 192.168.1.175:8080 weight=2;
+	}
+
+	server {
+		listen       80;
+		server_name  www.tomcats.com;
+	
+		location / {
+			proxy_pass http://tomcats
+		}
+	}
+
+2. Nginx 跨域配置支持
+	#允许跨域请求的域，*代表所有
+	add_header 'Access-Control-Allow-Origin' *;
+	#允许带上cookie请求
+	add_header 'Access-Control-Allow-Credentials' 'true';
+	#允许请求的方法，比如 GET/POST/PUT/DELETE
+	add_header 'Access-Control-Allow-Methods' *;
+	#允许请求的header
+	add_header 'Access-Control-Allow-Headers' *;
+
+3. Nginx 防盗链配置支持
+	#对源站点验证
+	valid_referers *.imooc.com; 
+	#非法引入会进入下方判断
+	if ($invalid_referer) {
+		return 404;
+	} 
+	
+4. upstream 指令参数 max_conns
+	限制每台server的连接数，用于保护避免过载，可起到限流作用。
+	测试参考配置如下：
+	# worker进程设置1个，便于测试观察成功的连接数
+	worker_processes  1;
+	
+	upstream tomcats {
+			server 192.168.1.173:8080 max_conns=2;
+			server 192.168.1.174:8080 max_conns=2;
+			server 192.168.1.175:8080 max_conns=2;
+	}
+
+
+5. upstream 指令参数 slow_start
+	商业版，需要付费
+	配置参考如下：
+	upstream tomcats {
+			server 192.168.1.173:8080 weight=6 slow_start=60s;
+	#       server 192.168.1.190:8080;
+			server 192.168.1.174:8080 weight=2;
+			server 192.168.1.175:8080 weight=2;
+	}
+	注意: 该参数不能使用在hash和random load balancing中。
+			如果在 upstream 中只有一台 server，则该参数失效。
+
+6. upstream 指令参数 down、backup
+	# down 用于标记服务节点不可用：
+	upstream tomcats {
+			server 192.168.1.173:8080 down;
+	#       server 192.168.1.190:8080;
+			server 192.168.1.174:8080 weight=1;
+			server 192.168.1.175:8080 weight=1;
+	}
+
+	# backup表示当前服务器节点是备用机，只有在其他的服务器都宕机以后，自己才会加入到集群中，被用户访问到：
+	upstream tomcats {
+			server 192.168.1.173:8080 backup;
+	#       server 192.168.1.190:8080;
+			server 192.168.1.174:8080 weight=1;
+			server 192.168.1.175:8080 weight=1;
+	}
+	注意: backup参数不能使用在hash和random load balancing中。
+
+7. upstream 指令参数 max_fails、fail_timeout
+	max_fails：表示失败几次，则标记server已宕机，剔出上游服务。
+	fail_timeout：表示失败的重试时间。
+	假设目前设置如下：
+		max_fails=2 fail_timeout=15s 
+		则代表在15秒内请求某一server失败达到2次后，则认为该server已经挂了或者宕机了，
+		随后再过15秒，这15秒内不会有新的请求到达刚刚挂掉的节点上，而是会请求到正常运作的server，
+		15秒后会再有新请求尝试连接挂掉的server，如果还是失败，重复上一过程，直到恢复。
+
+8. Keepalived 提高吞吐量
+	keepalived： 设置长连接处理的数量
+	proxy_http_version：设置长连接http版本为1.1
+	proxy_set_header：清除connection header 信息
+
+	upstream tomcats {
+	#       server 192.168.1.173:8080 max_fails=2 fail_timeout=1s;
+			server 192.168.1.190:8080;
+	#       server 192.168.1.174:8080 weight=1;
+	#       server 192.168.1.175:8080 weight=1;
+			keepalive 32;
+	}
+
+	server {
+		listen       80;
+		server_name  www.tomcats.com;
+	
+		location / {
+			proxy_pass  http://tomcats;
+			proxy_http_version 1.1;
+			proxy_set_header Connection "";
+		}
+	}
+	
+9. 负载均衡 ip_hash
+	ip_hash 可以保证用户访问可以请求到上游服务中的固定的服务器，前提是用户ip没有发生更改。
+	使用ip_hash的注意点：
+	不能把后台服务器直接移除，只能标记down.
+	If one of the servers needs to be temporarily removed, 
+	it should be marked with the down parameter in order to preserve the current hashing of client IP addresses.
+
+	upstream tomcats {
+			ip_hash;
+	
+			server 192.168.1.173:8080;
+			server 192.168.1.174:8080 down;
+			server 192.168.1.175:8080;
+	}
+	
+10. 负载均衡 url_hash
+	upstream tomcats {
+		# url hash
+		hash $request_uri;
+		# 最少连接数
+		# least_conn
+
+		server 192.168.1.173:8080;
+		server 192.168.1.174:8080;
+		server 192.168.1.175:8080;
+	}
+
+
+	server {
+		listen 80;
+		server_name www.tomcats.com;
+
+		location / {
+			proxy_pass  http://tomcats;
+		}
+	}
+	
