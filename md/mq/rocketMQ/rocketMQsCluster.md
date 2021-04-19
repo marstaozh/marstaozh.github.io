@@ -51,7 +51,7 @@ RocketMQ是一款分布式、队列模型的消息中间件，由阿里巴巴自
 RocketMQ为我们提供了丰富的集群架构模型，包括单点模式、主从模式、双主模式、以及生产上使用最多的双主双从模式（或者说多主多从模式），在这里我们仅介绍一下经典的双主双从集群模型
 ```
 
-![RocketMQ的双主双从集群模型](..\..\image\mq\rocketMQ\2Master2SlaveMode.png)
+![RocketMQ的双主双从集群模型](2Master2SlaveMode.png)
 
 
 

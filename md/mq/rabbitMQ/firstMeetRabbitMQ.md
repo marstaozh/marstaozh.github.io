@@ -79,3 +79,5 @@ Clients				Servers															Clients
 +-------------------+                   +--------+					+--------+					+--------+
 ```
 
+![mindMapping](mindMapping.png)
+

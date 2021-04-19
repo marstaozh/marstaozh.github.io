@@ -57,9 +57,12 @@ function setAttrs(conf){
 };
 
 function converteMd(href) {
-    $.get('java/installDocker.md', function(data) {
+    var pathReg = new RegExp("<img src=\"","g");
+    $.get(href, function(data) {
         var converter = new showdown.Converter();
         var html = converter.makeHtml(data);
+        var path = href.substring(0, href.lastIndexOf("/"));
+        html = html.replace(pathReg, "<img src=\"" + path + "/");
         $(".content").html(html);
     });
 };

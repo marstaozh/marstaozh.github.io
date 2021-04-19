@@ -44,11 +44,7 @@ DataStructure-->|-->链表
 ·如果是 Key-Value 型，那我们会选择Map。如果要保持插⼊顺序的，我们可以选择LinkedHashMap，如果不需要则选择HashMap，如果要排序则选择TreeMap。
 ```
 
-<img src="..\image\java\image1-JavaContainerSummary.jpg" alt="Java容器总结"  />
-
-
-
-
+<img src="image_JavaContainerSummary.jpg" alt="Java容器总结"  />
 
 
 
@@ -87,9 +83,7 @@ DataStructure-->|-->链表
 · 把集合共性的内容不断往上抽取，最终形成集合的继承体系->Collection
 ```
 
-![Collection集合及其子类](..\image\java\image1-CollectionsClassUML.png)
-
-
+<img src="image_CollectionsClassUML.png" alt="Collection集合及其子类"  />
 
 
 
@@ -116,9 +110,7 @@ DataStructure-->|-->链表
 	集合A和集合B做交集，最终的结果保存在集合A，返回值表示的是A是否发生变化。
 ```
 
-![Collection集合方法](..\image\java\image1-CollectionMethod.png)
-
-
+![Collection集合方法](image_CollectionMethod.png)
 
 
 

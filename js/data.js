@@ -2,45 +2,52 @@ var treeJson = [
     {
         "menuArr": [
             {
-                "href":"java/javaCollection.html",
-                "name":"集合",
-                "dataModuleId":"0"
+                "id": "base",
+                "name": "Java基础",
+                "menuArr": [
+                    {
+                        "href":"md/java/collection.md",
+                        "name":"集合",
+                        "dataModuleId":"0"
+                    },
+                    {
+                        "href":"md/java/BIO.md",
+                        "name":"同步与异步&阻塞与非阻塞",
+                        "dataModuleId":"1"
+                    },
+                    {
+                        "href":"md/java/netty.md",
+                        "name":"Netty",
+                        "dataModuleId":"2"
+                    },
+                    {
+                        "href":"md/java/transaction.md",
+                        "name":"事务",
+                        "dataModuleId":"3"
+                    }
+                ]
             },
-            {
-                "href":"java/BIO.html",
-                "name":"同步与异步&阻塞与非阻塞",
-                "dataModuleId":"1"
-            },
-            {
-                "href":"java/netty.html",
-                "name":"Netty",
-                "dataModuleId":"2"
-            },
-            {
-                "href":"java/transaction.html",
-                "name":"事务",
-                "dataModuleId":"3"
-            },
+            
             {
                 "menuArr": [
                     {
-                        "href":"thread.html",
+                        "href":"thread.md",
                         "name":"基础知识",
                         "dataModuleId":"0"
                     },
                     {
-                        "href":"treadLocal.html",
+                        "href":"treadLocal.md",
                         "name":"ThreadLocal",
                         "dataModuleId":"1"
                     }
                 ],
-                "id": "Tread",
+                "id": "tread",
                 "name": "多线程"
             },
             {
                 "menuArr": [
                     {
-                        "href":"factory.html",
+                        "href":"factory.md",
                         "name":"工厂模式",
                         "dataModuleId":"0"
                     }
@@ -49,7 +56,7 @@ var treeJson = [
                 "name": "设计模式"
             },
             {
-                "href":"con1.html",
+                "href":"lambda.md",
                 "name":"lambda",
                 "dataModuleId":"0"
             }
@@ -58,13 +65,95 @@ var treeJson = [
         "name": "Java"
     },
     {
+        "id": "frame",
+        "name": "框架",
+        "menuArr": [
+            {
+                "href":"md/frame/configCORS.md",
+                "name":"跨域配置",
+                "dataModuleId":"0"  
+            },
+            {
+                "href":"md/frame/swagger2.md",
+                "name":"跨域配置",
+                "dataModuleId":"1"  
+            }
+        ]
+    },
+    {
         "id": "database",
         "name": "数据库",
         "menuArr": [
             {
-                "href":"../md/database/mariaDB",
-                "name":"lambda",
+                "href":"md/database/mariaDB/installMariaDB10.4InCentOS7.md",
+                "name":"mariaDB",
                 "dataModuleId":"0"  
+            }
+        ]
+    },
+    {
+        "id": "messageQueue",
+        "name": "消息中间件",
+        "menuArr": [
+            {
+                "id": "activeMQ",
+                "name": "activeMQ",
+                "menuArr": [
+                    {
+                        "href":"md/mq/activeMQ/activeMQsCluster.md",
+                        "name":"ActiveMQ集群架构与原理解析",
+                        "dataModuleId":"0"
+                    }
+                ]
+            },
+            {
+                "id": "kafka",
+                "name": "kafka",
+                "menuArr": [
+                    
+                ]
+            },
+            {
+                "id": "rabbitMQ",
+                "name": "rabbitMQ",
+                "menuArr": [
+                    {
+                        "href":"md/mq/rabbitMQ/initEnv4RabbitMQ.md",
+                        "name":"rabbitMQ环境搭建",
+                        "dataModuleId":"0"
+                    },
+                    {
+                        "href":"md/mq/rabbitMQ/firstMeetRabbitMQ.md",
+                        "name":"初识RabbitMQ",
+                        "dataModuleId":"1"
+                    },
+                    {
+                        "href":"md/mq/rabbitMQ/rabbitMQsAPI.md",
+                        "name":"RabbitMQ核心API",
+                        "dataModuleId":"1"
+                    },
+                    {
+                        "href":"md/mq/rabbitMQ/RabbitMQAdvancedFeatures.md.md",
+                        "name":"RabbitMQ的高级特性",
+                        "dataModuleId":"1"
+                    },
+                    {
+                        "href":"md/mq/rabbitMQ/RabbitMQsCluster.md",
+                        "name":"RabbitMQ集群环境搭建",
+                        "dataModuleId":"1"
+                    }
+                ]
+            },
+            {
+                "id": "rocketMQ",
+                "name": "rocketMQ",
+                "menuArr": [
+                    {
+                        "href":"md/mq/rocketMQ/rocketMQsCluster.md",
+                        "name":"RocketMQ集群架构与原理解析",
+                        "dataModuleId":"0"
+                    }
+                ]
             }
         ]
     }

@@ -44,7 +44,7 @@ ActiveMQ是一个完全支持JMS 1.1和J2EE 1.4规范的 JMS Provider实现，�
 
   生产者向队列投递一条消息，只有一个消费者能够监听得到这条消息（PTP)，下图所示：
 
-![ActiveMQ的点对点消息模式](..\..\image\mq\activeMQ\point2pointMode.jpg)
+![ActiveMQ的点对点消息模式](point2pointMode.jpg)
 
 
 
@@ -52,7 +52,7 @@ ActiveMQ是一个完全支持JMS 1.1和J2EE 1.4规范的 JMS Provider实现，�
 
   生产者向队列投递一条消息，所有监听该队列的消费者都能够监听得到这条消息（P/S)，下图所示：
 
-  ![ActiveMQ的发布订阅消息模式](..\..\image\mq\activeMQ\publishMode.jpg)
+  ![ActiveMQ的发布订阅消息模式](publishMode.jpg)
   
   
 
@@ -78,7 +78,7 @@ ActiveMQ是一个完全支持JMS 1.1和J2EE 1.4规范的 JMS Provider实现，�
 
 * #### Master-Slave：
 
-  ![ActiveMQ的主从架构模式](..\..\image\mq\activeMQ\masterSlavePattern.jpg)
+  ![ActiveMQ的主从架构模式](masterSlavePattern.jpg)
 
   
 
@@ -92,9 +92,7 @@ ActiveMQ是一个完全支持JMS 1.1和J2EE 1.4规范的 JMS Provider实现，�
 
 * #### Network集群：
 
-  ![ActiveMQ的Network架构模式](..\..\image\mq\activeMQ\networkArchitecturePattern.jpg)
-
-  
+  ![ActiveMQ的Network架构模式](networkArchitecturePattern.jpg)
 
   
 

@@ -12,7 +12,9 @@
 
 #### BIO通信模型
 
-![image-20201120090726530](..\image\java\image2-BIOModel.png)
+![image-20201120090726530](image_BIOModel.png)
+
+
 
 
 
@@ -26,7 +28,7 @@
 
 #### 伪异步IO通信模型
 
-![image-20201120090246436](..\image\java\image2-pseudoAsyncIOModel.png)
+![image-20201120090246436](image_pseudoAsyncIOModel.png)
 
 
 
