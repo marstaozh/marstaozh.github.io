@@ -9,17 +9,17 @@ var treeJson = [
             {
                 "href":"java/BIO.html",
                 "name":"同步与异步&阻塞与非阻塞",
-                "dataModuleId":"0"
+                "dataModuleId":"1"
             },
             {
                 "href":"java/netty.html",
                 "name":"Netty",
-                "dataModuleId":"0"
+                "dataModuleId":"2"
             },
             {
                 "href":"java/transaction.html",
                 "name":"事务",
-                "dataModuleId":"0"
+                "dataModuleId":"3"
             },
             {
                 "menuArr": [
@@ -61,7 +61,7 @@ var treeJson = [
 
 var nodeTemplate = "<li data-module-id=\"replaceNodeDataModuleId\" class=\"menu_title_primary\">" + 
 "<a class=\"collapsed \" data-toggle=\"collapse\" data-target=\"#replaceNodeDivId\">" +
-"<span class=\"glyphicon glyphicon-folder-open\"></span>replateNodeMenuName<span class=\"caret\"></span></a>" +
+"<span class=\"glyphicon glyphicon-folder-open\"></span> replateNodeMenuName<span class=\"caret\"></span></a>" +
 "<div id=\"replaceNodeDivId\" class=\"collapse\" aria-expanded=\"false\" style=\"height: 1px;\">" +
   "<ul class=\"list-unstyled\">" +
   "replaceLi" +
@@ -76,6 +76,8 @@ $(function(){
     var reg = new RegExp("replaceNodeDivId","g");
     function recursionTree(nodeJson, level) {
         var menu = "";
+        var folderIcon = "<span class=\"glyphicon glyphicon-folder-open\"></span> ";
+        var fileIcon = "<span class=\"glyphicon glyphicon-file\"></span> ";
         $.each(nodeJson, function(index, value) {
             if(value.menuArr) {
                 
@@ -91,9 +93,9 @@ $(function(){
                 var leafLi = leafTemplate.replace(/replaceLeafDataModuleId/, value.dataModuleId);
                 leafLi = leafLi.replace(/replaceLeafHref/, value.href);
                 if(level == 3) {
-                    leafLi = leafLi.replace(/replaceLeafName/, "&nbsp;&nbsp;● " + value.name);
+                    leafLi = leafLi.replace(/replaceLeafName/, "&nbsp;&nbsp;" + fileIcon + value.name);
                 }else {
-                    leafLi = leafLi.replace(/replaceLeafName/, "● " + value.name);
+                    leafLi = leafLi.replace(/replaceLeafName/, fileIcon + value.name);
                 }
 
                 menu += leafLi;
