@@ -88,8 +88,18 @@ var treeJson = [
 				"name": "全文检索ES",
 				"menuArr": [
 					{
-						"href": "md/middleWare/elasticsearch/installMariaDB10.4InCentOS7.md",
-						"name": "mariaDB",
+						"href": "md/middleWare/elasticsearch/installElasticsearch.md",
+						"name": "安装ES",
+						"dataModuleId": "0"
+					},
+					{
+						"href": "md/middleWare/elasticsearch/intrudceES.md",
+						"name": "简单介绍ES",
+						"dataModuleId": "0"
+					},
+					{
+						"href": "md/middleWare/elasticsearch/dslSearch.md",
+						"name": "DSL搜索",
 						"dataModuleId": "0"
 					}
 				]
@@ -117,7 +127,7 @@ var treeJson = [
 		"name": "数据库",
 		"menuArr": [
 			{
-				"href": "md/database/mariaDB/installMariaDB10.4InCentOS7.md",
+				"href": "md/database/mariaDB/installMariaDB104InCentOS7.md",
 				"name": "mariaDB",
 				"dataModuleId": "0"
 			}
