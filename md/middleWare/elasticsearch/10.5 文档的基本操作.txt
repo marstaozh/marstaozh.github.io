@@ -1,0 +1,134 @@
+文档的基本操作
+
+1. 添加文档数据
+	(是指索引在es中的id，而不是这条记录的id，比如记录的id从数据库来是1001，并不是这个。
+		如果不写，则自动生成一个字符串。建议和数据id保持一致)
+	POST /my_doc/_doc/1 -> {索引名}/_doc/{索引ID}
+
+	{
+		"id": 1001,
+		"name": "imooc-1",
+		"desc": "imooc is very good, 慕课网非常牛！",
+		"create_date": "2019-12-24"
+	}
+	
+	{
+		"id": 1002,
+		"name": "imooc-2",
+		"desc": "imooc is fashion, 慕课网非常时尚！",
+		"create_date": "2019-12-25"
+	}
+	
+	{
+		"id": 1003,
+		"name": "imooc-3",
+		"desc": "imooc is niubility, 慕课网很好很强大！",
+		"create_date": "2019-12-26"
+	}
+	
+	{
+		"id": 1004,
+		"name": "imooc-4",
+		"desc": "imooc is good~！",
+		"create_date": "2019-12-27"
+	}
+	
+	{
+		"id": 1005,
+		"name": "imooc-5",
+		"desc": "慕课网 is 强大！",
+		"create_date": "2019-12-28"
+	}
+	
+	{
+		"id": 1006,
+		"name": "imooc-6",
+		"desc": "慕课是一个强大网站！",
+		"create_date": "2019-12-29"
+	}
+	
+	{
+		"id": 1007,
+		"name": "imooc-7",
+		"desc": "慕课网是很牛网站！",
+		"create_date": "2019-12-30"
+	}
+	
+	{
+		"id": 1008,
+		"name": "imooc-8",
+		"desc": "慕课网是很好看！",
+		"create_date": "2019-12-31"
+	}
+	
+	{
+		"id": 1009,
+		"name": "imooc-9",
+		"desc": "在慕课网学习很久！",
+		"create_date": "2020-01-01"
+	}
+	
+注：如果索引没有手动建立mappings，那么当插入文档数据的时候，会根据文档类型自动设置属性类型。这个就是es的动态映射，
+	帮我们在index索引库中去建立数据结构的相关配置信息。
+	“fields”: {“type”: “keyword”}
+	对一个字段设置多种索引模式，使用text类型做全文检索，也可使用keyword类型做聚合和排序
+	“ignore_above” : 256
+	设置字段索引和存储的长度最大值，超过则被忽略
+	
+2. 删除文档
+	DELETE /my_doc/_doc/1
+	注：文档删除不是立即删除，文档还是保存在磁盘上，索引增长越来越多，才会把那些曾经标识过删除的，进行清理，从磁盘上移出去。
+	
+3. 修改文档
+	局部：
+	POST /my_doc/_doc/1/_update
+	{
+		"doc": {
+			"name": "慕课"
+		}
+	}
+
+	全量替换：
+	PUT /my_doc/_doc/1
+	{
+		"id": 1001,
+		"name": "imooc-1",
+		"desc": "imooc is very good, 慕课网非常牛！",
+		"create_date": "2019-12-24"
+	}
+注：每次修改后，version会更改
+
+4. 查询文档
+	· 常规查询
+		GET /index_demo/_doc/1
+		GET /index_demo/_doc/_search
+	
+	· 查询结果
+		{
+			"_index": "my_doc",
+			"_type": "_doc",
+			"_id": "2",
+			"_score": 1.0,
+			"_version": 9,
+			"_source": {
+				"id": 1002,
+				"name": "imooc-2",
+				"desc": "imooc is fashion",
+				"create_date": "2019-12-25"
+			}
+		}
+
+	· 元数据
+		_index：文档数据所属那个索引，理解为数据库的某张表即可。
+		_type：文档数据属于哪个类型，新版本使用_doc。
+		_id：文档数据的唯一标识，类似数据库中某张表的主键。可以自动生成或者手动指定。
+		_score：查询相关度，是否契合用户匹配，分数越高用户的搜索体验越高。
+		_version：版本号。
+		_source：文档数据，json格式。
+
+	· 定制结果集
+		GET /index_demo/_doc/1?_source=id,name
+		GET /index_demo/_doc/_search?_source=id,name
+
+	· 判断文档是否存在
+		HEAD /index_demo/_doc/1
