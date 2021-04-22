@@ -39,7 +39,7 @@ $(function(){
                 if(level == 3) {
                     leafLi = leafLi.replace(/replaceLeafName/, "&nbsp;&nbsp;&nbsp;&nbsp;" + fileIcon + value.name);
                 }else {
-                    leafLi = leafLi.replace(/replaceLeafName/, fileIcon + value.name);
+                    leafLi = leafLi.replace(/replaceLeafName/, "&nbsp;&nbsp;" + fileIcon + value.name);
                 }
 
                 menu += leafLi;
