@@ -101,6 +101,11 @@ var treeJson = [
 						"href": "md/middleWare/elasticsearch/dslSearch.md",
 						"name": "DSL搜索",
 						"dataModuleId": "0"
+					},
+					{
+						"href": "md/middleWare/elasticsearch/installLogstatsh.md",
+						"name": "Logstatsh介绍",
+						"dataModuleId": "0"
 					}
 				]
 			},
