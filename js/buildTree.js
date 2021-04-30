@@ -20,29 +20,32 @@ $(function(){
         var fileIcon = "<span class=\"glyphicon glyphicon-file\"></span> ";
         $.each(nodeJson, function(index, value) {
             if(value.menuArr) {
-                
-                var nodeLi = nodeTemplate.replace(/replaceNodeDataModuleId/, level);
-                nodeLi = nodeLi.replace(reg, value.id);
-                if(level == 2) {
-                    nodeLi = nodeLi.replace(/replateNodeMenuName/, "&nbsp;&nbsp;" + folderIcon + value.name);
-                }else {
-                    nodeLi = nodeLi.replace(/replateNodeMenuName/, folderIcon + value.name);               
-                }
+                if(value.visible) {
+                    var nodeLi = nodeTemplate.replace(/replaceNodeDataModuleId/, level);
+                    nodeLi = nodeLi.replace(reg, value.id);
+                    if(level == 2) {
+                        nodeLi = nodeLi.replace(/replateNodeMenuName/, "&nbsp;&nbsp;" + folderIcon + value.name);
+                    }else {
+                        nodeLi = nodeLi.replace(/replateNodeMenuName/, folderIcon + value.name);               
+                    }
 
-                var li = recursionTree(value.menuArr, level+1);
-                nodeLi = nodeLi.replace(/replaceLi/, li);
-                menu += nodeLi;
-                
+                    var li = recursionTree(value.menuArr, level+1);
+                    nodeLi = nodeLi.replace(/replaceLi/, li);
+                    menu += nodeLi;
+                }
             }else {
-                var leafLi = leafTemplate.replace(/replaceLeafDataModuleId/, value.dataModuleId);
-                leafLi = leafLi.replace(/replaceLeafHref/, value.href);
-                if(level == 3) {
-                    leafLi = leafLi.replace(/replaceLeafName/, "&nbsp;&nbsp;&nbsp;&nbsp;" + fileIcon + value.name);
-                }else {
-                    leafLi = leafLi.replace(/replaceLeafName/, "&nbsp;&nbsp;" + fileIcon + value.name);
-                }
+                if(value.visible) {
+                    var leafLi = leafTemplate.replace(/replaceLeafDataModuleId/, value.dataModuleId);
+                    leafLi = leafLi.replace(/replaceLeafHref/, value.href);
+                    if(level == 3) {
+                        leafLi = leafLi.replace(/replaceLeafName/, "&nbsp;&nbsp;&nbsp;&nbsp;" + fileIcon + value.name);
+                    }else {
+                        leafLi = leafLi.replace(/replaceLeafName/, "&nbsp;&nbsp;" + fileIcon + value.name);
+                    }
 
-                menu += leafLi;
+                    menu += leafLi;
+                }
+                
             }
         });
 
