@@ -37,6 +37,24 @@ var treeJson = [
 			},
 			{
 				"id": "tread",
+				"name": "算法",
+				"visible": false,
+				"menuArr": [
+				{				
+					"href": "md/java/algorithm/search.md",
+					"name": "查找",
+					"visible": true,
+					"dataModuleId": "0"
+				},
+				{				
+					"href": "md/java/algorithm/straightInsertSort.md",
+					"name": "直接插入排序",
+					"visible": true,
+					"dataModuleId": "1"
+				}]
+			},
+			{
+				"id": "tread",
 				"name": "多线程",
 				"visible": false,
 				"menuArr": [
