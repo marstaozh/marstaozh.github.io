@@ -492,36 +492,257 @@ collection：
 
 
 
-
-
-## 2. 配置⽂件
-
-2.1别名
-2.2Mapper加载
-2.3延迟加载
-2.4 延迟加载测试
-
-
-
-## 3. 配置相关总结
-
-
-
-
-
-
-
 # 关联映射
+
+## 1. 一对一
+
+```
+
+```
+
+
+
+## 2. 一对多
+
+```
+1. 实体的属性设置：
+	一方：实体中配置集合形式的多方
+	多方：实体中配置一方的实体类属性
+	如，一个班有多个学生，班级是一，学生是多，
+	班级的实体中，配置 List<学生> 属性
+	学生的实体中，配置 班级 属性
+2. 配置文件：
+	
+```
+
+
+
+## 3. 多对多
+
+```
+1. 实体的属性设置：
+	多方：实体中配置另一多方的集合形式
+	如，学生和课程的多对多关系
+	学生实体中，配置 List<课程> 属性
+	课程实体中，配置 List<学生> 属性
+```
 
 
 
 # 缓存+Mapper代理+逆向⼯程
 
+## 1. Mybatis缓存
+
+```
+缓存的意义将⽤户经常查询的数据放在缓存（内存）中，⽤户去查询数据就不⽤从磁盘上(关系型数据库数据⽂件)查询，从缓存中查询，从⽽提⾼查询效率，解决了⾼并发系统的性能问题。
+```
+
+* Mybatis⼀级缓存
+
+```
+⼀个SqlSession级别，sqlsession只能访问⾃⼰的⼀级缓存的数据。
+缓存使⽤的数据结构是⼀个map<key,value>
+    key：hashcode+sql+sql输⼊参数+输出参数（sql的唯⼀标识）
+    value：缓存数据
+Mybatis默认就是⽀持⼀级缓存的，并不需要我们配置.
+Mybatis和spring整合后进⾏mapper代理开发，不⽀持⼀级缓存，
+    mybatis和spring整合，Spring按照mapper的模板去⽣成mapper代理对象，
+    模板中在最后统⼀关闭sqlsession。
+```
+
+* Mybatis⼆级缓存
+
+```xml
+1. 是跨sqlSession，是mapper级别的缓存，
+	对于mapper级别的缓存不同的sqlsession是可以共享的。
+2. 缓存使用的数据结构是map<key、value>
+3. 在Mybatis的配置⽂件中配置⼆级缓存
+    <!-- 全局配置参数 -->
+    <settings>
+        <!-- 开启⼆级缓存 -->
+        <setting name="cacheEnabled" value="true"/>
+    </settings>
+4. 在statement中设置useCache=false可以禁⽤当前select语句的⼆级缓存
+<select id="findOrderListResultMap" resultMap="ordersUserMap"useCache="false">
+
+5. 单独配置刷新缓存(但不建议使⽤)
+<update id="updateUser" parameterType="cn.itcast.mybatis.po.User" flushCache="false">
+```
+
+* 查询结果映射的pojo序列化
 
 
-# Mybatis整合Spring
+
+# Mybatis整合Springboot
+
+```
+1. application.yml配置
+    mybatis:
+      # 所有POJO类所在包路径
+      type-aliases-package: com.mars.minebatis.entity
+      # mapper映射文件
+      mapper-locations: classpath:mapper/*.xml
+      configuration:
+        # 将sql语句输出到控制台
+        log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+2. 启动类添加注解
+	@MapperScan("com.mars.minebatis.mapper")
+
+3. Mapper类上添加注解
+	@Repository
+```
 
 
 
 # Mybatis常⻅⾯试题
+
+* #{}和${}的区别是什么？
+
+```
+在Mybatis中，有两种占位符
+	#{} 解析传递进来的参数数据
+	${}对传递进来的参数原样拼接在SQL中
+	#{} 是预编译处理，${}是字符串替换。
+	使⽤#{}可以有效的防⽌SQL注⼊，提⾼系统安全性。
+```
+
+* 当实体类中的属性名和表中的字段名不⼀样 ，怎么办 ？
+
+```
+第1种： 通过在查询的sql语句中定义字段名的别名，让字段名的别名和实体类的属性名⼀致
+第2种： 通过 <resultMap> 来映射字段名和实体类属性名的⼀⼀对应的关系
+```
+
+* 如何获取⾃动⽣成的(主)键值?
+
+```
+mysql:
+	通过LAST_INSERT_ID()获取刚插⼊记录的⾃增主键值，
+	在insert语句执⾏后，执⾏select LAST_INSERT_ID()就可以获取⾃增主键。
+
+oracle:
+	先查询序列得到主键，将主键设置到user对象中，将user对象插⼊数据库。
+```
+
+* 在mapper中如何传递多个参数?
+
+```
+第⼀种：使⽤占位符的思想
+	在映射⽂件中使⽤#{0},#{1}代表传递进来的第⼏个参数
+	使⽤@param注解:来命名参数 #{0},#{1} ⽅式
+
+第⼆种：使⽤Map集合作为参数来装载
+```
+
+* Mybatis动态sql是做什么的？都有哪些动态sql标签？能简述⼀下动态sql的执⾏原理不？
+
+```
+1. Mybatis动态sql可以让我们在Xml映射⽂件内，以标签的形式编写动态sql，完成逻辑判断和动态拼接sql的功能。
+
+2. Mybatis提供了9种动态sql标签：			
+	trim|where|set|foreach|if|choose|when|otherwise|bind。
+
+3. 其执⾏原理为，使⽤OGNL从sql参数对象中计算表达式的值，根据表达式的值动态拼接sql，以此来完成动态sql的功能。
+```
+
+* Mybatis的Xml映射⽂件中，不同的Xml映射⽂件，id是否可以重复？
+
+```
+如果配置了namespace那么当然是可以重复的，因为我们的Statement实际上就是namespace+id
+如果没有配置namespace的话，那么相同的id就会导致覆盖了。
+```
+
+* 为什么说Mybatis是半⾃动ORM映射⼯具？它与全⾃动的区别在哪⾥？
+
+```
+Hibernate属于全⾃动ORM映射⼯具，使⽤Hibernate查询关联对象或者关联集合对象时，可以根据对象关系模型直接获取，所以它是全⾃动的。
+⽽Mybatis在查询关联对象或关联集合对象时，需要⼿动编写sql来完成，所以，称之为半⾃动ORM映射⼯具。
+```
+
+* 通常⼀个Xml映射⽂件，都会写⼀个Dao接⼝与之对应，请问，这个Dao接⼝的⼯作原理是什么？Dao接⼝⾥的⽅法，参数不同时，⽅法能重载吗？
+
+```
+Dao接⼝，就是⼈们常说的Mapper接⼝，接⼝的全限名，就是映射⽂件中的namespace的值，接⼝的⽅法名，就是映射⽂件中MappedStatement的id值，接⼝⽅法内的参数，就是传递给sql的参数。
+
+Mapper接⼝是没有实现类的，当调⽤接⼝⽅法时，接⼝全限名+⽅法名拼接字符串作为key值，可唯⼀定位⼀个MappedStatement。
+
+Dao接⼝⾥的⽅法，是不能重载的，因为是全限名+⽅法名的保存和寻找策略。
+Dao接⼝的⼯作原理是JDK动态代理，Mybatis运⾏时会使⽤JDK动态代理为Dao接⼝⽣成代理proxy对
+象，代理对象proxy会拦截接⼝⽅法，转⽽执⾏MappedStatement所代表的sql，然后将sql执⾏结果
+返回。
+```
+
+* Mybatis⽐IBatis⽐较⼤的⼏个改进是什么
+
+```
+a.有接⼝绑定,包括注解绑定sql和xml绑定Sql
+b.动态sql由原来的节点配置变成OGNL表达式
+c. 在⼀对⼀,⼀对多的时候引进了association,在⼀对多的时候引⼊了collection节点,不过都是在resultMap⾥⾯配置
+```
+
+* 接⼝绑定有⼏种实现⽅式,分别是怎么实现的?
+
+```
+1. ⼀种是通过注解绑定,就是在接⼝的⽅法上⾯加上@Select@Update等注解⾥⾯包含Sql语句来绑定
+2. 另外⼀种就是通过xml⾥⾯写SQL来绑定,在这种情况下,要指定xml映射⽂件⾥⾯的namespace必须为接⼝的全路径名
+```
+
+* Mybatis是如何进⾏分⻚的？分⻚插件的原理是什么？
+
+```
+Mybatis使⽤RowBounds对象进⾏分⻚，它是针对ResultSet结果集执⾏的内存分⻚，⽽⾮物理分⻚，可以在sql内直接书写带有物理分⻚的参数来完成物理分⻚功能，也可以使⽤分⻚插件来完成物理分⻚。
+分⻚插件的基本原理是使⽤Mybatis提供的插件接⼝，实现⾃定义插件，在插件的拦截⽅法内拦截待执⾏的sql，然后重写sql，根据dialect⽅⾔，添加对应的物理分⻚语句和物理分⻚参数。
+```
+
+* 简述Mybatis的插件运⾏原理，以及如何编写⼀个插件
+
+```
+Mybatis仅可以编写针对ParameterHandler、ResultSetHandler、StatementHandler、Executor这4种接⼝的插件，Mybatis使⽤JDK的动态代理，为需要拦截的接⼝⽣成代理对象以实现接⼝⽅法拦截功能，每当执⾏这4种接⼝对象的⽅法时，就会进⼊拦截⽅法，具体就是InvocationHandler的invoke()⽅法，当然，只会拦截那些你指定需要拦截的⽅法。
+实现Mybatis的Interceptor接⼝并复写intercept()⽅法，然后在给插件编写注解，指定要拦截哪⼀个接⼝的哪些⽅法即可，记住，别忘了在配置⽂件中配置你编写的插件。
+```
+
+* Mybatis是否⽀持延迟加载？如果⽀持，它的实现原理是什么？
+
+```
+Mybatis仅⽀持association关联对象和collection关联集合对象的延迟加载，association指的就是⼀对⼀，collection指的就是⼀对多查询。在Mybatis配置⽂件中，可以配置是否启⽤延迟加载lazyLoadingEnabled=true|false。
+
+它的原理是，使⽤CGLIB创建⽬标对象的代理对象，当调⽤⽬标⽅法时，进⼊拦截器⽅法，⽐如调⽤a.getB().getName()，拦截器invoke()⽅法发现a.getB()是null值，那么就会单独发送事先保存好的查询关联B对象的sql，把B查询上来，然后调⽤a.setB(b)，于是a的对象b属性就有值了，接着完成
+a.getB().getName()⽅法的调⽤。这就是延迟加载的基本原理。
+
+当然了，不光是Mybatis，⼏乎所有的包括Hibernate，⽀持延迟加载的原理都是⼀样的。
+```
+
+* Mybatis都有哪些Executor执⾏器？它们之间的区别是什么？
+
+```
+Mybatis有三种基本的Executor执⾏器，SimpleExecutor、ReuseExecutor、BatchExecutor。
+
+SimpleExecutor：每执⾏⼀次update或select，就开启⼀个Statement对象，⽤完⽴刻关闭
+Statement对象。
+
+ReuseExecutor：执⾏update或select，以sql作为key查找Statement对象，存在就使⽤，不存在
+就创建，⽤完后，不关闭Statement对象，⽽是放置于Map<String, Statement>内，供下⼀次使⽤。简⾔之，就是重复使⽤Statement对象。
+
+BatchExecutor：执⾏update（没有select，JDBC批处理不⽀持select），将所有sql都添加到批处
+理中（addBatch()），等待统⼀执⾏（executeBatch()），它缓存了多个Statement对象，每个Statement对象都是addBatch()完毕后，等待逐⼀执⾏executeBatch()批处理。与JDBC批处理相同。
+
+作⽤范围：Executor的这些特点，都严格限制在SqlSession⽣命周期范围内。
+```
+
+* MyBatis与Hibernate有哪些不同？
+
+```
+Mybatis和hibernate不同:
+	它不完全是⼀个ORM框架，因为MyBatis需要程序员⾃⼰编写Sql语句，不过mybatis可以通过XML或注解⽅式灵活配置要运⾏的sql语句，并将java对象和sql语句映射⽣成最终执⾏的sql，最后将sql执⾏的结果再映射⽣成java对象。
+
+	Mybatis学习⻔槛低，简单易学，程序员直接编写原⽣态sql，可严格控制sql执⾏性能，灵活度⾼，⾮常适合对关系数据模型要求不⾼的软件开发，例如互联⽹软件、企业运营类软件等，因为这类软件需求变
+化频繁，⼀但需求变化要求成果输出迅速。但是灵活的前提是mybatis⽆法做到数据库⽆关性，如果需
+要实现⽀持多种数据库的软件则需要⾃定义多套sql映射⽂件，⼯作量⼤。
+	Hibernate对象/关系映射能⼒强，数据库⽆关性好，对于关系模型要求⾼的软件（例如需求固定的定制化软件）如果⽤hibernate开发可以节省很多代码，提⾼效率。但是Hibernate的缺点是学习⻔槛⾼，要
+精通⻔槛更⾼，⽽且怎么设计O/R映射，在性能和对象模型之间如何权衡，以及怎样⽤好Hibernate需要具有很强的经验和能⼒才⾏。
+
+总之，按照⽤户的需求在有限的资源环境下只要能做出维护性、扩展性良好的软件架构都是好架构，所
+以框架只有适合才是最好。
+```
 
