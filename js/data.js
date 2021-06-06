@@ -41,16 +41,34 @@ var treeJson = [
 				"visible": true,
 				"menuArr": [
 				{				
-					"href": "md/java/algorithm/Search.md",
-					"name": "查找",
+					"href": "md/java/algorithm/StraightInsertSort.md",
+					"name": "直接插入排序",
 					"visible": true,
 					"dataModuleId": "0"
 				},
 				{				
-					"href": "md/java/algorithm/StraightInsertSort.md",
-					"name": "直接插入排序",
+					"href": "md/java/algorithm/Search.md",
+					"name": "查找",
 					"visible": true,
 					"dataModuleId": "1"
+				},
+				{				
+					"href": "md/java/algorithm/SimpleSelectedSort.md",
+					"name": "简单选择排序",
+					"visible": true,
+					"dataModuleId": "2"
+				},
+				{				
+					"href": "md/java/algorithm/BubbleSort.md",
+					"name": "冒泡排序",
+					"visible": true,
+					"dataModuleId": "3"
+				},
+				{				
+					"href": "md/java/algorithm/QuickSort.md",
+					"name": "快速排序",
+					"visible": true,
+					"dataModuleId": "4"
 				}]
 			},
 			{
