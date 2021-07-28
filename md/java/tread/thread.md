@@ -1,6 +1,6 @@
-# 1. 什么是多线程
+## 1. 什么是多线程
 
-## 1.1 进程的介绍
+### 1.1 进程的介绍
 
 进程的定义：
 
@@ -10,7 +10,7 @@
 
 
 
-## 1.2 回到线程
+### 1.2 回到线程
 
 那系统有了进程这么⼀个概念了，进程已经是可以进⾏资源分配和调度了，为什么还要线程呢？
 为使程序能并发执⾏，系统必须进⾏以下的⼀系列操作：
@@ -33,7 +33,7 @@
 
 
 
-## 1.3 进程和线程的总结
+### 1.3 进程和线程的总结
 
 * 总结
 
@@ -64,7 +64,7 @@
 
 
 
-## 1.4 并行和并发
+### 1.4 并行和并发
 
 * 并⾏：
 
@@ -80,7 +80,7 @@
 
 
 
-## 1.5 Java实现多线程
+### 1.5 Java实现多线程
 
 * 创建多线程有三种⽅法：
 
@@ -88,7 +88,7 @@
   > 实现Runnable接⼝，重写run⽅法
   > 实现Callable接⼝，重写run⽅法
 
-* 继承Thread，重写run⽅法
+* **继承Thread**，重写run⽅法
 
 ```java
 public class MyThread extends Thread {
@@ -115,7 +115,7 @@ public class MyThreadDemo {
 
 
 
-* 实现Runnable接⼝，重写run⽅法
+* **实现Runnable接⼝**，重写run⽅法
 
 ```java
 public class MyRunnable implements Runnable {
@@ -143,7 +143,7 @@ public class MyRunnableDemo {
 
 
 
-* 实现Callable接⼝，重写run⽅法
+* **实现Callable接⼝**，重写run⽅法
 
 ```
 实现Callable和实现Runnable类似，但是功能更强大，具体表现在
@@ -167,7 +167,7 @@ public class MyRunnableDemo {
 
 
 
-# 2. Thread类解析
+## 2. Thread类解析
 
 * 设置线程名
 
@@ -183,7 +183,7 @@ public class MyRunnableDemo {
 
 * 使⽤线程的时候要注意的地⽅
 
->1. 在线程启动前设置为守护线程，⽅法是 setDaemon(boolean on)
+>1. **在线程启动前**设置为守护线程，⽅法是 setDaemon(boolean on)
 >2. 使⽤守护线程不要访问共享资源(数据库、⽂件等)，因为它可能会在任何时候就挂掉了。
 >3. 守护线程中产⽣的新线程也是守护线程
 
@@ -215,40 +215,11 @@ public class MyRunnableDemo {
 
 
 
+## 3. 使用多线程需注意的问题
 
 
 
-
-# 3. 使用多线程需注意的问题
-
+## 4. synchronized锁和lock锁
 
 
-# 4. synchronized锁和lock锁
-
-
-
-# 5. AQS
-
-
-
-# 6. ReentrantLock和ReentrantReadWriteLock
-
-
-# 7. 线程池
-
-
-
-# 8. 死锁
-
-
-
-# 9. 线程常用的工具类
-
-
-
-# 10. Atomic
-
-
-
-# 11. ThreadLocal
 
